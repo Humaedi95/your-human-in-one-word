@@ -13,5 +13,13 @@ import { dirname } from "node:path";
 const WORD = "Taskmaster";
 const OUTPUT_PATH = process.env.OUTPUT_PATH ?? "/output/entry.txt";
 
+// Guard: the entry must be exactly one word, 1-30 chars, no whitespace.
+// This keeps the output valid even if the word is ever changed.
+if (!/^\S{1,30}$/.test(WORD)) {
+  throw new Error(
+    `Invalid entry word ${JSON.stringify(WORD)}: must be a single word, 1-30 characters, no whitespace.`,
+  );
+}
+
 mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
 writeFileSync(OUTPUT_PATH, WORD, "utf8");
